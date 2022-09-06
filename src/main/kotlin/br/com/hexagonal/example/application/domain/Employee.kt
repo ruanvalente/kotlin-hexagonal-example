@@ -7,14 +7,14 @@ import javax.persistence.*
 data class Employee(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(nullable = false)
-    val role: String,
+    var role: String,
 
     @Column(nullable = false)
-    val salary: Long
+    var salary: Int
 )
