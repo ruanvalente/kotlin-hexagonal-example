@@ -9,6 +9,7 @@ import br.com.hexagonal.example.infrastructure.repository.SpringDataEmployeeRepo
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.Optional
 
 @Service
 class EmployeeService(
@@ -24,10 +25,14 @@ class EmployeeService(
         return repository.save(employMapper.mapper(employeeRequest))
     }
 
-    override fun getEmployeeById(employeeId: Long): Employee {
-        return repository.findById(employeeId).orElseThrow {
-            EmployeeException("Recurso não encontrado.")
+    override fun getEmployeeById(employeeId: Long): Employee? {
+        val employee: Optional<Employee> = repository.findById(employeeId)
+
+        if (employee.isPresent) {
+            return employee.get()
         }
+
+        return null
     }
 
     override fun listAllEmployees(): List<Employee> {
@@ -35,10 +40,7 @@ class EmployeeService(
     }
 
     @Transactional
-    override fun updateEmployee(
-        employeeId: Long,
-        employeeRequest: EmployeeRequestDTO
-    ) {
+    override fun updateEmployee(employeeId: Long, employeeRequest: Employee) {
         TODO("Not yet implemented")
     }
 
