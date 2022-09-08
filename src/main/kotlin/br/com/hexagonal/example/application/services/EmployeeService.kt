@@ -12,12 +12,9 @@ import java.util.*
 
 @Service
 class EmployeeService(
-    @Autowired
-    val repository: SpringDataEmployeeRepository,
-    @Autowired
-    val employMapper: EmployeeRequestMapper
-) :
-    EmployeeRepositoryPort {
+    @Autowired val repository: SpringDataEmployeeRepository,
+    @Autowired val employMapper: EmployeeRequestMapper
+) : EmployeeRepositoryPort {
 
     @Transactional
     override fun createEmployee(employeeRequest: EmployeeRequestDTO): Employee {
@@ -39,8 +36,19 @@ class EmployeeService(
     }
 
     @Transactional
-    override fun updateEmployee(employeeId: Long, employeeRequest: Employee): Employee {
-        TODO("Not yet implemented")
+    override fun updateEmployee(
+        employeeId: Long, employeeRequest: EmployeeRequestDTO
+    ): Employee? {
+        val employee: Optional<Employee> = repository.findById(employeeId)
+
+        if (employee.isPresent) {
+            employee.get().name = employeeRequest.name
+            employee.get().role = employeeRequest.role
+            employee.get().salary = employeeRequest.salary
+            return repository.saveAndFlush(employee.get())
+        }
+
+        return null
     }
 
     @Transactional

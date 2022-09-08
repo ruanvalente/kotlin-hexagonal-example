@@ -44,8 +44,23 @@ class EmployeeControllerAdapter(val employeeService: EmployeeService) :
             .body((employee))
     }
 
+    override fun updateEmployee(
+        employeeId: Long,
+        employeeRequest: EmployeeRequestDTO
+    ): ResponseEntity<Employee> {
+        val employee =
+            employeeService.updateEmployee(employeeId, employeeRequest)
+
+        if (Objects.isNull(employee)) {
+            return ResponseEntity.notFound().build()
+        }
+
+        return ResponseEntity.ok().body(employee)
+    }
+
+
     override fun removeEmployee(employeeId: Long): ResponseEntity<Employee> {
-       val employee = employeeService.removeEmployee(employeeId)
+        val employee = employeeService.removeEmployee(employeeId)
 
         if (Objects.isNull(employee)) {
             return ResponseEntity.notFound().build()
