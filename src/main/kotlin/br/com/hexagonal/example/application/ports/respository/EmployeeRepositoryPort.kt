@@ -11,8 +11,7 @@ interface EmployeeRepositoryPort {
     fun listAllEmployees(): List<Employee>
 
     fun updateEmployee(
-        employeeId: Long,
-        employeeRequest: EmployeeRequestDTO
+        employeeId: Long, employeeRequest: EmployeeRequestDTO
     ): Employee?
 
     fun removeEmployee(employeeId: Long): Employee?

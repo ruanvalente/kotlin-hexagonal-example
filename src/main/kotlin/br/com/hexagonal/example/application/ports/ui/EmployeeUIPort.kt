@@ -12,25 +12,20 @@ interface EmployeeUIPort {
     fun listAllEmployees(): ResponseEntity<List<Employee>>
 
     @GetMapping("/view/{id}")
-    fun getEmployeeById(@PathVariable("id") employeeId: Long):
-            ResponseEntity<Employee>
+    fun getEmployeeById(@PathVariable("id") employeeId: Long): ResponseEntity<Employee>
 
     @PostMapping("create")
     fun createEmployee(
-        @RequestBody @Valid employeeRequest:
-        EmployeeRequestDTO, uriBuilder: UriComponentsBuilder
-    ):
-            ResponseEntity<Employee>
+        @RequestBody @Valid employeeRequest: EmployeeRequestDTO,
+        uriBuilder: UriComponentsBuilder
+    ): ResponseEntity<Employee>
 
     @PutMapping("/update/{id}")
     fun updateEmployee(
-        @PathVariable("id") employeeId: Long, @RequestBody
-        @Valid
-        employeeRequest:
-        EmployeeRequestDTO
+        @PathVariable("id") employeeId: Long,
+        @RequestBody @Valid employeeRequest: EmployeeRequestDTO
     ): ResponseEntity<Employee>
 
     @DeleteMapping("/remove/{id}")
-    fun removeEmployee(@PathVariable("id") employeeId: Long):
-            ResponseEntity<Employee>
+    fun removeEmployee(@PathVariable("id") employeeId: Long): ResponseEntity<Employee>
 }

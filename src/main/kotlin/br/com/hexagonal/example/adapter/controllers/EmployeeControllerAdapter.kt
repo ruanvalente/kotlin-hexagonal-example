@@ -30,23 +30,19 @@ class EmployeeControllerAdapter(val employeeService: EmployeeService) :
     }
 
     override fun createEmployee(
-        employeeRequest: EmployeeRequestDTO,
-        uriBuilder: UriComponentsBuilder
+        employeeRequest: EmployeeRequestDTO, uriBuilder: UriComponentsBuilder
     ): ResponseEntity<Employee> {
         val employee = employeeService.createEmployee(employeeRequest)
 
-        val uri: URI = uriBuilder.path("/employees/{id}")
-            .buildAndExpand(employee.id)
-            .toUri()
+        val uri: URI =
+            uriBuilder.path("/employees/{id}").buildAndExpand(employee.id)
+                .toUri()
 
-        return ResponseEntity
-            .created(uri)
-            .body((employee))
+        return ResponseEntity.created(uri).body((employee))
     }
 
     override fun updateEmployee(
-        employeeId: Long,
-        employeeRequest: EmployeeRequestDTO
+        employeeId: Long, employeeRequest: EmployeeRequestDTO
     ): ResponseEntity<Employee> {
         val employee =
             employeeService.updateEmployee(employeeId, employeeRequest)

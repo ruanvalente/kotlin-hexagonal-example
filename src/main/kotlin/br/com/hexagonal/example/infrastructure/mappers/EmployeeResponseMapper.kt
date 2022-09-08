@@ -5,13 +5,10 @@ import br.com.hexagonal.example.application.DTO.responses.EmployeeResponseDTO
 import org.springframework.stereotype.Component
 
 @Component
-class EmployeeResponseMapper :
-    Mapper<EmployeeRequestDTO, EmployeeResponseDTO> {
+class EmployeeResponseMapper : Mapper<EmployeeRequestDTO, EmployeeResponseDTO> {
     override fun mapper(t: EmployeeRequestDTO): EmployeeResponseDTO {
         return EmployeeResponseDTO(
-            name = t.name,
-            role = t.role,
-            salary = t.salary
+            name = t.name, role = t.role, salary = t.salary
         )
     }
 }
