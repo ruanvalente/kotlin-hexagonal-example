@@ -1,7 +1,6 @@
 package br.com.hexagonal.example.adapter.controllers
 
 import br.com.hexagonal.example.application.DTO.requests.EmployeeRequestDTO
-import br.com.hexagonal.example.application.DTO.responses.EmployeeResponseDTO
 import br.com.hexagonal.example.application.ports.domain.Employee
 import br.com.hexagonal.example.application.ports.ui.EmployeeUIPort
 import br.com.hexagonal.example.application.services.EmployeeService
@@ -45,7 +44,13 @@ class EmployeeControllerAdapter(val employeeService: EmployeeService) :
             .body((employee))
     }
 
-    override fun removeEmployee(employeeId: Long) {
-        employeeService.removeEmployee(employeeId)
+    override fun removeEmployee(employeeId: Long): ResponseEntity<Employee> {
+       val employee = employeeService.removeEmployee(employeeId)
+
+        if (Objects.isNull(employee)) {
+            return ResponseEntity.notFound().build()
+
+        }
+        return ResponseEntity.noContent().build()
     }
 }

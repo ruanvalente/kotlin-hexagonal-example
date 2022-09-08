@@ -3,13 +3,12 @@ package br.com.hexagonal.example.application.services
 import br.com.hexagonal.example.application.DTO.requests.EmployeeRequestDTO
 import br.com.hexagonal.example.application.ports.domain.Employee
 import br.com.hexagonal.example.application.ports.respository.EmployeeRepositoryPort
-import br.com.hexagonal.example.infrastructure.exceptions.EmployeeException
 import br.com.hexagonal.example.infrastructure.mappers.EmployeeRequestMapper
 import br.com.hexagonal.example.infrastructure.repository.SpringDataEmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.Optional
+import java.util.*
 
 @Service
 class EmployeeService(
@@ -40,13 +39,19 @@ class EmployeeService(
     }
 
     @Transactional
-    override fun updateEmployee(employeeId: Long, employeeRequest: Employee) {
+    override fun updateEmployee(employeeId: Long, employeeRequest: Employee): Employee {
         TODO("Not yet implemented")
     }
 
     @Transactional
-    override fun removeEmployee(employeeId: Long) {
-        TODO("Not yet implemented")
-    }
+    override fun removeEmployee(employeeId: Long): Employee? {
+        val employee: Optional<Employee> = repository.findById(employeeId)
 
+        if (employee.isPresent) {
+            repository.delete(employee.get())
+            return employee.get()
+        }
+
+        return null
+    }
 }

@@ -26,5 +26,6 @@ interface EmployeeUIPort {
 //    fun updateEmployee(@RequestBody @Valid employee: Employee): Void
 //
     @DeleteMapping("/remove/{id}")
-    fun removeEmployee(employeeId: Long)
+    fun removeEmployee(@PathVariable("id") employeeId: Long):
+        ResponseEntity<Employee>
 }
