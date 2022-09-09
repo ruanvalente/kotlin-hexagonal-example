@@ -1,3 +1,3 @@
 package br.com.hexagonal.example.infrastructure.exceptions
-
-class EmployeeException(message: String) : Exception(message)
+import java.lang.RuntimeException
+class EmployeeException(message: String?) : RuntimeException(message)

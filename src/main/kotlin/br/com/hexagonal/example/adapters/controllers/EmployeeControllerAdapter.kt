@@ -1,4 +1,4 @@
-package br.com.hexagonal.example.adapter.controllers
+package br.com.hexagonal.example.adapters.controllers
 
 import br.com.hexagonal.example.application.DTO.requests.EmployeeRequestDTO
 import br.com.hexagonal.example.application.ports.domain.Employee
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.util.UriComponentsBuilder
 import java.net.URI
-import java.util.*
 
 @RestController
 @RequestMapping("employees")
@@ -21,11 +20,6 @@ class EmployeeControllerAdapter(val employeeService: EmployeeService) :
 
     override fun getEmployeeById(employeeId: Long): ResponseEntity<Employee> {
         val employee = employeeService.getEmployeeById(employeeId)
-
-        if (Objects.isNull(employee)) {
-            return ResponseEntity.notFound().build()
-        }
-
         return ResponseEntity.ok().body(employee)
     }
 
@@ -47,21 +41,10 @@ class EmployeeControllerAdapter(val employeeService: EmployeeService) :
         val employee =
             employeeService.updateEmployee(employeeId, employeeRequest)
 
-        if (Objects.isNull(employee)) {
-            return ResponseEntity.notFound().build()
-        }
-
         return ResponseEntity.ok().body(employee)
     }
 
-
-    override fun removeEmployee(employeeId: Long): ResponseEntity<Employee> {
-        val employee = employeeService.removeEmployee(employeeId)
-
-        if (Objects.isNull(employee)) {
-            return ResponseEntity.notFound().build()
-
-        }
-        return ResponseEntity.noContent().build()
+    override fun removeEmployee(employeeId: Long) {
+        employeeService.removeEmployee(employeeId)
     }
 }

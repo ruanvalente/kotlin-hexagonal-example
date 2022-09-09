@@ -14,5 +14,5 @@ interface EmployeeRepositoryPort {
         employeeId: Long, employeeRequest: EmployeeRequestDTO
     ): Employee?
 
-    fun removeEmployee(employeeId: Long): Employee?
+    fun removeEmployee(employeeId: Long)
 }
