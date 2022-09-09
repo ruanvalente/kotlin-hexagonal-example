@@ -2,6 +2,7 @@ package br.com.hexagonal.example.application.ports.ui
 
 import br.com.hexagonal.example.application.DTO.requests.EmployeeRequestDTO
 import br.com.hexagonal.example.application.ports.domain.Employee
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
@@ -27,5 +28,6 @@ interface EmployeeUIPort {
     ): ResponseEntity<Employee>
 
     @DeleteMapping("/remove/{id}")
-    fun removeEmployee(@PathVariable("id") employeeId: Long): ResponseEntity<Employee>
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    fun removeEmployee(@PathVariable("id") employeeId: Long)
 }

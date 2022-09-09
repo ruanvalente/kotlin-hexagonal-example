@@ -3,6 +3,7 @@ package br.com.hexagonal.example.application.services
 import br.com.hexagonal.example.application.DTO.requests.EmployeeRequestDTO
 import br.com.hexagonal.example.application.ports.domain.Employee
 import br.com.hexagonal.example.application.ports.respository.EmployeeRepositoryPort
+import br.com.hexagonal.example.infrastructure.exceptions.EmployeeException
 import br.com.hexagonal.example.infrastructure.mappers.EmployeeRequestMapper
 import br.com.hexagonal.example.infrastructure.repository.SpringDataEmployeeRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,7 +14,8 @@ import java.util.*
 @Service
 class EmployeeService(
     @Autowired val repository: SpringDataEmployeeRepository,
-    @Autowired val employMapper: EmployeeRequestMapper
+    @Autowired val employMapper: EmployeeRequestMapper,
+    val excpetionMessage: String = "Recurso não encontrado"
 ) : EmployeeRepositoryPort {
 
     @Transactional
@@ -22,13 +24,9 @@ class EmployeeService(
     }
 
     override fun getEmployeeById(employeeId: Long): Employee? {
-        val employee: Optional<Employee> = repository.findById(employeeId)
-
-        if (employee.isPresent) {
-            return employee.get()
+        return repository.findById(employeeId).orElseThrow {
+            EmployeeException(excpetionMessage)
         }
-
-        return null
     }
 
     override fun listAllEmployees(): List<Employee> {
@@ -52,14 +50,12 @@ class EmployeeService(
     }
 
     @Transactional
-    override fun removeEmployee(employeeId: Long): Employee? {
-        val employee: Optional<Employee> = repository.findById(employeeId)
+    override fun removeEmployee(employeeId: Long) {
+        val employee = repository.findById(employeeId)
+            .orElseThrow { EmployeeException(excpetionMessage) }
 
-        if (employee.isPresent) {
-            repository.delete(employee.get())
-            return employee.get()
+        if (Objects.nonNull(employee)) {
+            repository.delete(employee)
         }
-
-        return null
     }
 }
