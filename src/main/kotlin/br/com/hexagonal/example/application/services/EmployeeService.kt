@@ -15,7 +15,7 @@ import java.util.*
 class EmployeeService(
     @Autowired val repository: SpringDataEmployeeRepository,
     @Autowired val employMapper: EmployeeRequestMapper,
-    val excpetionMessage: String = "Recurso não encontrado"
+    val exceptionMessage: String = "Recurso não encontrado"
 ) : EmployeeRepositoryPort {
 
     @Transactional
@@ -25,7 +25,7 @@ class EmployeeService(
 
     override fun getEmployeeById(employeeId: Long): Employee? {
         return repository.findById(employeeId).orElseThrow {
-            EmployeeException(excpetionMessage)
+            EmployeeException(exceptionMessage)
         }
     }
 
@@ -52,7 +52,7 @@ class EmployeeService(
     @Transactional
     override fun removeEmployee(employeeId: Long) {
         val employee = repository.findById(employeeId)
-            .orElseThrow { EmployeeException(excpetionMessage) }
+            .orElseThrow { EmployeeException(exceptionMessage) }
 
         if (Objects.nonNull(employee)) {
             repository.delete(employee)
